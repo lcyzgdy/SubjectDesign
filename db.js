@@ -31,7 +31,7 @@ exports.init = (callback) => {
 
 /**
  * @param {String} collectionName
- * @param {String} docs
+ * @param {any} docs
  * @param {(err: mongo.MongoError, result: mongo.InsertOneWriteOpResult) => void} callback
  */
 exports.insertOne = (collectionName, docs, callback) => {
@@ -40,7 +40,7 @@ exports.insertOne = (collectionName, docs, callback) => {
 
 /**
  * @param {String} collectionName
- * @param {String} conditions
+ * @param {any} conditions
  * @param {(err: mongo.MongoError, result: any) => void} callback
  */
 exports.findAny = (collectionName, conditions, callback) => {
@@ -50,8 +50,8 @@ exports.findAny = (collectionName, conditions, callback) => {
 
 /**
  * @param {String} collectionName
- * @param {String} where
- * @param {String} newValue
+ * @param {any} where
+ * @param {any} newValue
  * @param {} callback
  */
 exports.updateOne = (collectionName, where, newValue, callback) => {
@@ -60,8 +60,8 @@ exports.updateOne = (collectionName, where, newValue, callback) => {
 
 /**
  * @param {String} collectionName
- * @param {String} where
- * @param {String} newValue
+ * @param {any} where
+ * @param {any} newValue
  * @param {(err: Error, result: mongo.FindAndModifyWriteOpResultObject<TSchema>) => void} callback
  */
 exports.findOneAndUpdate = (collectionName, where, newValue, callback) => {
@@ -75,7 +75,7 @@ exports.findOneAndUpdate = (collectionName, where, newValue, callback) => {
  */
 
 /**
- * @param {mongo.ObjectID} _id
+ * @param {mongo.ObjectId} _id
  */
 exports.objectId2Strig = (_id) => {
     return _id.toHexString()
@@ -85,5 +85,5 @@ exports.objectId2Strig = (_id) => {
  * @param {String} _id
  */
 exports.string2ObjectID = (_id) => {
-    return new mongo.ObjectID(_id)
+    return new mongo.ObjectId(_id)
 }

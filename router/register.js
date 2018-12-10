@@ -1,21 +1,24 @@
-var crypto = require('crypto')
 var db = require('../db')
+var funcs = require('../funcs')
+var session = require('../session')
 
 const DB_COLLECTION_NAME = 'users'
 /**
- * 
- * @param {string} _username 
- * @param {string} _password 
- * @param {(err : Error, status: number, userUuid: string) => void} callback 
+ * @param {Express.Request} request
+ * @param {String} _username 
+ * @param {String} _password 
+ * @param {String} remoteIp
+ * @param {(err : Error, status: number, session: String) => void} callback 
  */
-exports.register = (_username, _password, callback) => {
+exports.register = (request, _username, _password, remoteIp, callback) => {
     // var token = md5sum(_username + _password)
     // db.users.insert token
-    var doc = {
+    let registerDate = Date.now()
+    let doc = {
         username: _username,
         password: _password,
-        logined: true,
-        latestLogin: Date.now()
+        latestLogin: registerDate,
+        registerDate: registerDate
     }
     db.findAny(DB_COLLECTION_NAME, { username: _username }, (err, result) => {
         if (err) {
@@ -33,16 +36,22 @@ exports.register = (_username, _password, callback) => {
                 callback(err, 2, null)
                 return
             }
-            console.log(result.result)
+            //console.log(result.result)
+            request.session.user = result.insertedId
+            let sessDoc = {
+                username: _username,
+                password: _password
+            }
+            db.updateOne(DB_COLLECTION_NAME, sessDoc, {
+                $set: {
+                    latestLogin: Date.now(),
+                    sid: request.sessionID
+                }
+            })
             callback(null, 0, result.insertedId)
         })
     })
 }
-
-function md5sum(str) {
-    return crypto.createHash('md5').update(str).digest('hex')
-}
-
 
 /**
  * 错误类型：

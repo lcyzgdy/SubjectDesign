@@ -1,13 +1,14 @@
-var crypto = require('crypto')
 var db = require('../db')
+var session = require('../session')
 
 const DB_COLLECTION_NAME = 'users'
 /**
+ * @param {Express.Session} reqSess
  * @param {String} _username
  * @param {String} _password
  * @param {(err: Error, status: number, uuid: String) => void} callback
  */
-exports.login = (_username, _password, callback) => {
+exports.login = (reqSess, _username, _password, callback) => {
     let where = {
         username: _username,
         password: _password
@@ -15,8 +16,7 @@ exports.login = (_username, _password, callback) => {
 
     let update = {
         $set: {
-            lastestLogin: Date.now(),
-            logined: true
+            latestLogin: Date.now()
         }
     }
     db.findOneAndUpdate(DB_COLLECTION_NAME, where, update, (err, result) => {
@@ -24,9 +24,23 @@ exports.login = (_username, _password, callback) => {
             callback(err, 2, null)
             return
         }
-        console.log(result.value)
-        if (result.ok === 1) {
-            callback(null, 0)
+        //console.log(result.value)
+        if (result.ok === 1 && result.value) {
+            let uuid = String(result.value['_id'])
+            let sid = String(result.value['sid'])
+            session.destory(sid)
+            reqSess.user = uuid
+            let saveSid = {
+                $set: {
+                    sid: reqSess.id
+                }
+            }
+            db.updateOne(DB_COLLECTION_NAME, where, saveSid, () => {
+                callback(null, 0, uuid)
+            })
+        }
+        else {
+            callback(null, 1, null)
         }
     })
 
@@ -46,12 +60,24 @@ exports.login = (_username, _password, callback) => {
     })*/
 }
 
-exports.logout = (_id) => {
-
+/**
+ * @param {Express.Session} reqSess
+ * @param {(err: Error) => void} callback
+ */
+exports.logout = (reqSess, callback) => {
+    reqSess.destroy((err) => {
+        callback(err)
+    })
 }
 
-function md5sum(str) {
-    return crypto.createHash('md5').update(str).digest('hex')
+/**
+ * @param {Express.Session} reqSess
+ */
+exports.loggedin = (reqSess) => {
+    if (reqSess.user) {
+        return true
+    }
+    return false
 }
 
 /**

@@ -13,7 +13,6 @@ exports.login = (reqSess, _username, _password, callback) => {
         username: _username,
         password: _password
     }
-
     let update = {
         $set: {
             latestLogin: Date.now()

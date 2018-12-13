@@ -7,6 +7,24 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "爬虫",
+            "program": "${workspaceFolder}/tools/movieoverview.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "添加和tag的关系",
+            "program": "${workspaceFolder}/tools/movieTagRel.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "插入Movie",
+            "program": "${workspaceFolder}/tools/importMovies.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "启动程序",
             "program": "${workspaceFolder}/main.js"
         }

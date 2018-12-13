@@ -2,6 +2,7 @@ var express = require('express')
 var db = require('./db')
 var register = require('./router/register')
 var login = require('./router/login')
+var movies = require('./router/movies')
 var util = require('util')
 var session = require('./session')
 var app = express()
@@ -69,6 +70,33 @@ app.post('/register', (req, res) => {
         }
         res.end('{"status": 0}')
     })
+}).post('/searchMovie', (req, res) => {
+    if (!login.loggedin(req.session)) {
+        res.end('{"status": 5}')
+        return
+    }
+    let data = ''
+    req.on('data', (chunk) => {
+        data += chunk
+    }).on('end', () => {
+        let infoJson;
+        try {
+            infoJson = JSON.parse(data)
+        }
+        catch (err) {
+            res.end('{"status": 3}')    // JSON 格式错误
+            return
+        }
+        movies.getMovieByName(infoJson['title'], (err, result) => {
+            if (err) {
+                res.end('{"status": 6}')
+                return
+            }
+            let r = JSON.parse('{"status": 0}')
+            r['result'] = result
+            res.end(JSON.stringify(r))
+        })
+    })
 })
 
 app.get('/logintest', (req, res) => {
@@ -95,4 +123,5 @@ console.log('OK');
  * 3：Json格式错误
  * 4：登录错误（程序错误或数据库错误引起，定义为网络错误）
  * 5：未登录错误
+ * 6：服务器错误
  */

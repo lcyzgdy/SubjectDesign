@@ -87,3 +87,18 @@ exports.objectId2Strig = (_id) => {
 exports.string2ObjectID = (_id) => {
     return new mongo.ObjectId(_id)
 }
+
+exports.release = () => {
+    dbClient.close()
+}
+
+/**
+ * @param {String} collectionName
+ * @param {any} where
+ * @param {(err: Error, result: mongo.Course<any>) => void} callback
+ */
+exports.searchMany = (collectionName, where, callback) => {
+    let res = db.collection(collectionName).find(where).limit(50)
+    console.log(res)
+    callback(null, res)
+}

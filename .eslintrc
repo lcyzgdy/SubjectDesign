@@ -1,0 +1,18 @@
+{
+  "extends": ["react-app"],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-multi-spaces": "off",
+    "import/no-unresolved": "off",
+    "react/jsx-space-before-closing": "off",
+    "jsx-quotes": "off",
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-boolean-value": "off",
+    "react/no-string-refs": "off",
+    "react/self-closing-comp": "off",
+    "react/jsx-pascal-case": "off",
+    "import/extensions": "off",
+    "react/no-unused-prop-types": "off",
+    "no-param-reassign": "off"
+  }
+}

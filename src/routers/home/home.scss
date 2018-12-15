@@ -1,0 +1,14 @@
+.home {
+  .tab-list {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    background-color: #f6f6f6;
+    width: 100%;
+    li {
+      list-style: none;
+      flex: 1;
+      outline: none;
+    }
+  }
+}

@@ -14,8 +14,22 @@ import {
 import * as actions from "./actions";
 import { selector, getNowPlayReducerName } from "./ducks";
 import HeaderSearch from "./HeaderSearch";
+import SignUpForm from './SignUpForm';
+import SignInForm from './SignInForm';
+import './index.css';
+import './iconfont/iconfont.css';
+import BgBubbles from './BgBubbles';
+
 
 class User extends Component {
+
+  state = {
+    formData: {
+      email: '',
+      username: '',
+      password: ''
+    },
+  }
 
   componentDidMount() {
     
@@ -23,8 +37,19 @@ class User extends Component {
 
   render() {
     return (
-      <div>
-        user
+      <div className="UserDialog-wrap">
+        <div className="signUpOrLogIn">
+          <div>
+            <SignUpForm formData={this.state.formData} onSubmit={() => {}}
+                        onChange={() => {}} 
+                        switch={() => {}}/> 
+            {/* <SignInForm formData={this.state.formData} onSubmit={() => {}}
+                      onChange={() => {}} 
+                      switch={() => {}}/>  */}
+          </div>
+        </div>
+        <BgBubbles />
+        <div className="user-bg" />
       </div>
     );
   }

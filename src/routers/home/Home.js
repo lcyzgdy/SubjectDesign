@@ -5,6 +5,7 @@ import { homeList } from "./constants";
 import "./home.scss";
 import HotPlay from "./hotPlay/HotPlay";
 import User from './user/User';
+import 'antd-mobile/dist/antd-mobile.css';
 
 class Home extends Component {
   constructor(props) {

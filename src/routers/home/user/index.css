@@ -1,0 +1,81 @@
+.signUpOrLogIn, .forgetPassword-wrap {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, .4);
+    background-color: #fff;
+    transform: translate(-50%, -50%);
+}
+
+.UserDialog-wrap h3 {
+    color: #289DFF;
+    margin-bottom: 1em;
+}
+
+.UserDialog-wrap .row {
+    margin-bottom: 1em;
+}
+
+.row > label {
+    position: absolute;
+    right: 18px;
+    color: rgba(0, 0, 0, .65);
+}
+
+.row > input {
+    width: 18em;
+    height: 30px;
+    line-height: 1.4;
+    padding-left: .4em;
+    padding-bottom: .8em;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    transition: all .4s;
+}
+
+.row > input:focus {
+    border-bottom-color: #289DFF;
+}
+
+.UserDialog-wrap button {
+    border: 1px solid #289DFF;
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #fff;
+    transition: all .5s;
+}
+
+.UserDialog-wrap button:hover {
+    background-color: #289DFF;
+    color: #fff;
+    border-radius: 8px;
+}
+
+a {
+    float: right;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-color: #289DFF;
+}
+
+.noAccountBtn {
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.forgetPasswordBtn, .goBackLogInBtn, .haveAccountBtn {
+    margin-top: 8px;
+}
+
+.user-bg {
+    position: relative;
+    height: 100vh;
+    z-index: -2;
+    background: linear-gradient(to bottom, #6dd5ed, #2193b0);
+}

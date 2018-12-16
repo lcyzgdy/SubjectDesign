@@ -1,0 +1,16 @@
+.signup-btn {
+    background: #289DFF !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+}
+
+.signup-btn:hover {
+    background: #289DFF;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.haveAccountBtn {
+    text-decoration: none;
+    color: #289DFF;
+}

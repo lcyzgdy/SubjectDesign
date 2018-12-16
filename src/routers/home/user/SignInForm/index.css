@@ -1,0 +1,17 @@
+.signin-btn {
+    background: #289DFF !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+}
+
+.signin-btn:hover {
+    background: #289DFF;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.noAccountBtn {
+    text-decoration: none;
+    color: #289DFF;
+}
+

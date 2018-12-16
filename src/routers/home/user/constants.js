@@ -1,1 +1,3 @@
-export const NAME = "HOT_PLAY";
+export const NAME = "USER";
+export const SIGNUP = "signUp";
+export const SIGNIN = "signIn";

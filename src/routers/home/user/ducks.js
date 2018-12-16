@@ -4,31 +4,32 @@ import * as actions from "./actions";
 import { NAME as PARENT_NAME } from "../constants";
 import { NAME } from "./constants";
 
-export const getNowPlayReducerName = "GET_NOW_PLAY";
+export const userReducerName = "USERCONFIG";
 
-const getNowPlayReducer = (state = {}, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case actions.GET_PLAY_NOW_FETCH:
+    case actions.CHANGE_USER_STATUS:
       return {
-        isFetching: true
-      };
-    case actions.GET_NOW_PLAY_SUCCES:
+        ...state,
+        userStatus: get(action, "payload"),
+      }
+    case actions.CHANGE_FORM_DATA:
       return {
-        payload: get(action, "payload"),
-        isFetching: false
-      };
-    case actions.GET_NOW_PLAY_FAILURE:
-      return {
-        payload: get(action, "payload"),
-        isFetching: false
-      };
+        ...state,
+        formData: get(action, "payload"),
+      }
     default:
-      return state;
+      return {
+        ...state,
+        userStatus: 'signUp',
+        formData: {},
+      }
   }
-};
+}
 
 export const selector = (state, reducerName) => {
+  console.log('state', state)
   return get(state, `${PARENT_NAME}.${NAME}.${reducerName}`);
 };
 
-export default combineReducers({ [getNowPlayReducerName]: getNowPlayReducer });
+export default combineReducers({ [userReducerName]: userReducer });

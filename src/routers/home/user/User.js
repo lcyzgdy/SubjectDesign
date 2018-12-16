@@ -12,13 +12,14 @@ import {
   Button
 } from "../../../components";
 import * as actions from "./actions";
-import { selector, getNowPlayReducerName } from "./ducks";
+import { selector, userReducerName } from "./ducks";
 import HeaderSearch from "./HeaderSearch";
 import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
 import './index.css';
 import './iconfont/iconfont.css';
 import BgBubbles from './BgBubbles';
+import * as constants from './constants';
 
 
 class User extends Component {
@@ -31,22 +32,53 @@ class User extends Component {
     },
   }
 
-  componentDidMount() {
-    
+  renderUserDialog = ({userStatus, changeUserStatus, formData = {
+    email: '',
+    username: '',
+    password: ''
+  }, changeFormData}) => {
+    switch (userStatus) {
+      case constants.SIGNUP:
+        return (
+          <SignUpForm formData={formData} onSubmit={() => {}}
+                        onChange={(key, value) => {changeFormData(key, value)}} 
+                        switch={() => {}}
+                        changeStauts={(status) => {changeUserStatus(status)}}
+          /> 
+        );
+      case constants.SIGNIN:
+        return (
+          <SignInForm formData={formData} onSubmit={() => {}}
+                    onChange={(key, value) => {changeFormData(key, value)}} 
+                    switch={() => {}}
+                    changeStauts={(status) => {changeUserStatus(status)}}
+          />
+        );
+      default:
+          return null;
+    }
   }
 
+  changeFormDataByKey = (key, value) => {
+    const { changeFormData, selector } = this.props;
+    const formData = get(selector, 'formData');
+    formData[key] = value;
+    console.log('f', formData)
+    changeFormData(formData);
+  }
+
+  componentDidMount() {
+  }
+
+
   render() {
+    const { selector, changeUserStatus } = this.props;
+    const userStatus = get(selector, 'userStatus');
+    const formData = get(selector, 'formData');
     return (
       <div className="UserDialog-wrap">
         <div className="signUpOrLogIn">
-          <div>
-            <SignUpForm formData={this.state.formData} onSubmit={() => {}}
-                        onChange={() => {}} 
-                        switch={() => {}}/> 
-            {/* <SignInForm formData={this.state.formData} onSubmit={() => {}}
-                      onChange={() => {}} 
-                      switch={() => {}}/>  */}
-          </div>
+          {this.renderUserDialog({formData, userStatus, changeUserStatus, changeFormData: this.changeFormDataByKey})}
         </div>
         <BgBubbles />
         <div className="user-bg" />
@@ -56,11 +88,12 @@ class User extends Component {
 }
 
 const mapStateToprops = state => {
-  return { };
+  return { selector: selector(state, userReducerName) };
 };
 
 const mapDispatchToProps = {
-
+  changeUserStatus: actions.changeUserStatus,
+  changeFormData: actions.changeFormData,
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(User);

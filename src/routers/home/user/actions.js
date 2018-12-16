@@ -1,10 +1,10 @@
 import { createAction } from "redux-actions";
 import { NAME } from "./constants";
 
-export const GET_PLAY_NOW_FETCH = `${NAME}.GET_PLAY_NOW_FETCH`;
-export const GET_NOW_PLAY_SUCCES = `${NAME}.GET_NOW_PLAY_SUCCES`;
-export const GET_NOW_PLAY_FAILURE = `${NAME}.GET_NOW_PLAY_FAILURE`;
+export const CHANGE_USER_STATUS = `${NAME}.CHANGE_USER_STATUS`;
+export const changeUserStatus = createAction(CHANGE_USER_STATUS);
 
-export const getNowPlay = createAction(GET_PLAY_NOW_FETCH);
-export const successSuggest = createAction(GET_NOW_PLAY_SUCCES);
-export const failureSuggest = createAction(GET_NOW_PLAY_FAILURE);
+export const CHANGE_FORM_DATA = `${NAME}.CHANGE_FORM_DATA`;
+export const changeFormData = createAction(CHANGE_FORM_DATA);
+
+

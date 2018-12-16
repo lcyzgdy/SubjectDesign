@@ -1,10 +1,12 @@
 import React from 'react'
 import  './index.css'
 import { Flex } from '../../../../components';
+import * as constants from '../constants';
+
 export default function (props) {
     return (
         <div>
-            <h3>登陆 <a href="#" className="noAccountBtn" onClick={props.switch.bind(this)}>还没有账号，注册</a>
+            <h3>登陆 <a href="#" className="noAccountBtn" onClick={() => {props.changeStauts(constants.SIGNUP)}}>还没有账号，注册</a>
             </h3>
             <form className="logIn" onSubmit={props.onSubmit}>
                 <div className="row">

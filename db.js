@@ -95,10 +95,31 @@ exports.release = () => {
 /**
  * @param {String} collectionName
  * @param {any} where
+ * @param {any} projection
  * @param {(err: Error, result: mongo.Course<any>) => void} callback
  */
-exports.searchMany = (collectionName, where, callback) => {
-    let res = db.collection(collectionName).find(where).limit(50)
-    console.log(res)
-    callback(null, res)
+exports.searchMany = (collectionName, where, projection, callback) => {
+    let options = {}
+    if (projection) {
+        options['projection'] = projection
+    }
+    db.collection(collectionName).find(where, options).limit(20).toArray((err, res) => {
+        callback(null, res)
+    })
+}
+
+/**
+ * @param {String} collectionName
+ * @param {any} where
+ * @param {any} projection
+ * @param {(err: Error, result: any) => void} callback
+ */
+exports.searchOne = (collectionName, where, projection, callback) => {
+    let options = {}
+    if (projection) {
+        options['projection'] = projection
+    }
+    db.collection(collectionName).findOne(where, options, (err, result) => {
+        callback(err, result)
+    })
 }

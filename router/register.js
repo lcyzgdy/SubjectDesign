@@ -40,7 +40,8 @@ exports.register = (request, _username, _password, remoteIp, callback) => {
             request.session.user = result.insertedId
             let sessDoc = {
                 username: _username,
-                password: _password
+                password: _password,
+                movieid: result.insertedId
             }
             db.updateOne(DB_COLLECTION_NAME, sessDoc, {
                 $set: {

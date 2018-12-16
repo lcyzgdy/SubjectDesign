@@ -25,7 +25,7 @@ exports.login = (reqSess, _username, _password, callback) => {
         }
         //console.log(result.value)
         if (result.ok === 1 && result.value) {
-            let uuid = String(result.value['_id'])
+            let uuid = String(result.value['userid'])
             let sid = String(result.value['sid'])
             session.destory(sid)
             reqSess.user = uuid
@@ -77,6 +77,60 @@ exports.loggedin = (reqSess) => {
         return true
     }
     return false
+}
+
+/**
+ * @param {String} uuid
+ * @param {(err: Error, status: number, result: any) => void} callback
+ */
+exports.userProperty = (uuid, callback) => {
+    let where = {
+        userid: uuid
+    }
+    let projection = {
+        _id: 0,
+        userid: 0,
+        password: 0,
+        ratings: 0,
+        sid: 0
+    }
+    db.searchOne(DB_COLLECTION_NAME, where, projection, (err, res) => {
+        if (err) {
+            callback(err)
+            return
+        }
+        let status = 0
+        if (!res) status = 2
+        callback(null, status, res)
+    })
+}
+
+/**
+ * @param {String} uuid
+ * @param {(err: Error, status: number, result: any) => void} callback
+ */
+exports.userRatings = (uuid, callback) => {
+    let where = {
+        userid: uuid
+    }
+    let projection = {
+        _id: 0,
+        userid: 0,
+        username: 0,
+        password: 0,
+        latestLogin: 0,
+        registerDate: 0,
+        sid: 0
+    }
+    db.searchOne(DB_COLLECTION_NAME, where, projection, (err, res) => {
+        if (err) {
+            callback(err)
+            return
+        }
+        let status = 0
+        if (!res) status = 2
+        callback(null, status, res)
+    })
 }
 
 /**

@@ -7,14 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "爬虫",
-            "program": "${workspaceFolder}/tools/movieoverview.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "添加和tag的关系",
-            "program": "${workspaceFolder}/tools/movieTagRel.js"
+            "name": "用户对电影的评分",
+            "program": "${workspaceFolder}/tools/rating.js"
         },
         {
             "type": "node",

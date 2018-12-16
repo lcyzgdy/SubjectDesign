@@ -70,7 +70,7 @@ app.post('/register', (req, res) => {
         }
         res.end('{"status": 0}')
     })
-}).post('/searchMovie', (req, res) => {
+}).post('/searchMovieByName', (req, res) => {
     if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
@@ -87,12 +87,66 @@ app.post('/register', (req, res) => {
             res.end('{"status": 3}')    // JSON 格式错误
             return
         }
-        movies.getMovieByName(infoJson['title'], (err, result) => {
+        movies.getMovieByName(infoJson['title'], infoJson['fuzzy'], (err, result) => {
             if (err) {
                 res.end('{"status": 6}')
                 return
             }
             let r = JSON.parse('{"status": 0}')
+            r['result'] = result
+            res.end(JSON.stringify(r))
+        })
+    })
+}).post('/getUserProperty', (req, res) => {
+    if (!login.loggedin(req.session)) {
+        res.end('{"status": 5}')
+        return
+    }
+    let data = ''
+    req.on('data', (chunk) => {
+        data += chunk
+    }).on('end', () => {
+        let infoJson;
+        try {
+            infoJson = JSON.parse(data)
+        }
+        catch (err) {
+            res.end('{"status": 3}')    // JSON 格式错误
+            return
+        }
+        login.userProperty(infoJson['uuid'], (err, status, result) => {
+            if (err) {
+                res.end('{"status": 6}')
+                return
+            }
+            let r = JSON.parse(util.format('{"status": %d}', status))
+            r['result'] = result
+            res.end(JSON.stringify(r))
+        })
+    })
+}).post('/getUserRatings', (req, res) => {
+    if (!login.loggedin(req.session)) {
+        res.end('{"status": 5}')
+        return
+    }
+    let data = ''
+    req.on('data', (chunk) => {
+        data += chunk
+    }).on('end', () => {
+        let infoJson;
+        try {
+            infoJson = JSON.parse(data)
+        }
+        catch (err) {
+            res.end('{"status": 3}')    // JSON 格式错误
+            return
+        }
+        login.userRatings(infoJson['uuid'], (err, status, result) => {
+            if (err) {
+                res.end('{"status": 6}')
+                return
+            }
+            let r = JSON.parse(util.format('{"status": %d}', status))
             r['result'] = result
             res.end(JSON.stringify(r))
         })

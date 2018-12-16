@@ -156,3 +156,115 @@ Content
 |5|该用户未登录|
 |2|其它错误（一般为服务器错误）|
 
+
+## 查询电影（通过名称）
+* 类型：POST
+### 格式
+URI
+``` 
+http://hostname:port/searchMovieByName
+```
+Header
+``` JSON
+{
+    "cookie": "connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4"
+}
+```
+Content
+``` JSON
+{
+    "title": "Toy",
+    "fuzzy": true
+}
+```
+##### 含义
+* title：名称
+* fuzzy：是否开启模糊查询，默认精准匹配
+### 返回值
+#### Header
+```
+set-cookie -> connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4; Path=/; Expires=Mon, 10 Dec 2018 15:21:54 GMT; HttpOnly
+```
+#### Content
+``` JSON
+{
+  "status": 0,
+  "result": [
+    {
+      "movieid": 1,
+      "title": "Toy Story (1995)",
+      "genres": [
+        "Adventure",
+        "Animation",
+        "Children",
+        "Comedy",
+        "Fantasy"
+      ],
+      "imurl": "http://www.imdb.com/title/tt0114709",
+      "tmurl": "https://www.themoviedb.org/movie/862/zh"
+    }
+  ]
+}
+```
+##### 含义
+* status：操作状态。
+
+|status||
+|------|------|
+|0|成功|
+|5|该用户未登录|
+|6|服务器错误|
+* result：查询结果，默认最多20条
+
+
+## 获取用户打分记录
+* 类型：POST
+### 格式
+URI
+``` 
+http://hostname:port/getUserRatings
+```
+Header
+``` JSON
+{
+    "cookie": "connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4"
+}
+```
+Content
+``` JSON
+{
+    "uuid": 1
+}
+```
+##### 含义
+* uuid：用户的 ID，登录后可获得
+### 返回值
+#### Header
+```
+set-cookie -> connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4; Path=/; Expires=Mon, 10 Dec 2018 15:21:54 GMT; HttpOnly
+```
+#### Content
+``` JSON
+{
+  "status": 0,
+  "result": {
+    "ratings": [
+      {
+        "307": 3.5
+      },
+      {
+        "481": 3.5
+      }
+    ]
+  }
+}
+```
+##### 含义
+* status：操作状态。
+
+|status||
+|------|------|
+|0|成功|
+|5|该用户未登录|
+|6|服务器错误|
+* result：查询结果，所有的打分记录

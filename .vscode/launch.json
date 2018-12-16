@@ -7,15 +7,9 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "用户对电影的评分",
-            "program": "${workspaceFolder}/tools/rating.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "插入Movie",
-            "program": "${workspaceFolder}/tools/importMovies.js"
-        },
+            "name": "电影内容",
+            "program": "${workspaceFolder}/tools/movieoverview.js"
+        }
         {
             "type": "node",
             "request": "launch",

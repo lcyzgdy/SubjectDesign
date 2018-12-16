@@ -267,4 +267,72 @@ set-cookie -> connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6
 |0|成功|
 |5|该用户未登录|
 |6|服务器错误|
-* result：查询结果，所有的打分记录
+* result：查询结果，所有的打分记录。其中 ratings 是一个数组，包含所有对 key 电影的 value 评分，key 为 movieid。
+
+
+
+## 通过ID查看电影详情
+* 类型：POST
+### 格式
+URI
+``` 
+http://hostname:port/getMovieById
+```
+Header
+``` JSON
+{
+    "cookie": "connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4"
+}
+```
+Content
+``` JSON
+{
+    "movieid": 1
+}
+```
+##### 含义
+* movieid：电影的 ID。
+### 返回值
+#### Header
+```
+set-cookie -> connect.sid=s%3AUk-30sTqFvl4lLp2DvqFhRFDtv6rKzJV.4LV2XhCom2v%2Fza6Hz7H5Xb0eQNKFQrYBXlJFl2s2Oj4; Path=/; Expires=Mon, 10 Dec 2018 15:21:54 GMT; HttpOnly
+```
+#### Content
+``` JSON
+{
+  "status": 0,
+  "result": {
+    "title": "Toy Story (1995)",
+    "genres": [
+      "Adventure",
+      "Animation",
+      "Children",
+      "Comedy",
+      "Fantasy"
+    ],
+    "imurl": "http://www.imdb.com/title/tt0114709",
+    "tmurl": "https://www.themoviedb.org/movie/862/zh",
+    "imgurl": "https://image.tmdb.org/t/p/w300_and_h450_bestv2/uMZqKhT4YA6mqo2yczoznv7IDmv.jpg",
+    "overview": "胡迪是小主人安弟最喜欢的传统牛仔玩偶，他和其他玩具趁主人不在时，便会＂活＂起来一起玩闹。可是好景不常，最新奇的热门玩具巴斯光年来了，他让胡迪备受冷落。失宠的胡迪为了巩固自己的地位，只好处心积虑地想要赶走巴斯。在一次意外中，胡迪和巴斯不幸陷入一个玩具虐待狂的邻居家中而命在旦夕。两个冤家路窄互不相容的对手，是否能够化敌为友、发挥机智，顺利地通过这场冒险之旅，回到小主的身边呢？"
+  }
+}
+```
+##### 含义
+* status：操作状态。
+
+|status||
+|------|------|
+|0|成功|
+|5|该用户未登录|
+|6|服务器错误|
+|7|未找到|
+* result：查询结果。
+
+|key|value||
+|----|----|--|
+|title|电影名称|String|
+|genres|类型|Array of string|
+|imurl|URL|String|
+|tmurl|URL|String|
+|imgurl|主视觉图的 URL|String|
+|overview|简介|String|

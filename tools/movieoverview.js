@@ -56,53 +56,57 @@ function getContent(movieId, imdbId, tmdbId) {
         }
     })*/
 }
-function updateMovies() {
-    var ins = fs.createReadStream('C:/Users/PC/Documents/Code/ml-latest/links.csv')
-    readline.createInterface(ins).on('line', (str) => {
-        let temp = str.split(',')
-        let movieId = temp[0] >> 0
-        let imdbId = temp[1] >> 0
-        let tmdbId = temp[2] >> 0
 
-        let tmUrl = util.format('https://www.themoviedb.org/movie/%d/zh', tmdbId)
-        let imUrl = util.format('http://www.imdb.com/title/tt%s', funcs.fill(imdbId, 7))
+//let i = 0
+function updateMovies() {
+    var ins = fs.createReadStream('C:/Users/PC/Documents/Code/ml-latest/contents6.csv')
+    readline.createInterface(ins).on('line', (str) => {
+        if (!str || str.length == 0) return
+        //if (i > 0) return
+        //i++
+        let i0 = str.indexOf(',')
+        let i1 = str.lastIndexOf(',')
+        let movieId = str.substring(0, i0) >> 0
+        let content = str.substring(i0 + 1, i1)
+        let imgurl = str.substr(i1 + 1)
+        if (content[0] === '"' && content[content.length - 1] === '"') {
+            content = content.substr(1, content.length - 2)
+        }
 
         let where = {
             movieid: movieId
         }
 
-        let value;
-        if (imdbId !== 0 && tmdbId !== 0) {
-            value = {
+        let update
+        if (content.length > 0 && imgurl.length > 0) {
+            update = {
                 $set: {
-                    tmurl: tmUrl,
-                    imurl: imUrl
+                    overview: content,
+                    imgurl: imgurl
                 }
             }
         }
-        else if (imdbId === 0) {
-            if (tmdbId !== 0) {
-                value = {
-                    $set: {
-                        tmurl: tmUrl
-                    }
-                }
-            }
-            else return
-        }
-        else {
-            value = {
+        else if (content.length > 0) {
+            update = {
                 $set: {
-                    imurl: imUrl
+                    overview: content
                 }
             }
         }
-
-        db.collection('movies').updateOne(where, value, (err, res) => {
+        else if (imgurl.length > 0) {
+            update = {
+                $set: {
+                    imgurl: imgurl
+                }
+            }
+        }
+        else return
+        db.collection('movies').updateOne(where, update, (err, res) => {
             if (err) {
-                console.log(err.message)
+                console.log(err)
             }
         })
+
     }).on('close', () => {
         dbClient.close()
     })

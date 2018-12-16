@@ -4,6 +4,7 @@ import { Text, Flex, Icon } from "../../components";
 import { homeList } from "./constants";
 import "./home.scss";
 import HotPlay from "./hotPlay/HotPlay";
+import User from './user/User';
 
 class Home extends Component {
   constructor(props) {
@@ -53,10 +54,10 @@ class Home extends Component {
           <HotPlay />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <User />
         </TabPanel>
         <TabPanel>
-          <h2>Any content 3</h2>
+          <User />
         </TabPanel>
       </Tabs>
     );

@@ -58,7 +58,7 @@ class Home extends Component {
           <HotPlay />
         </TabPanel>
         <TabPanel>
-          <User />
+          <User changeTab={() => {this.setState({ index: 1 })}}/>
         </TabPanel>
       </Tabs>
     );

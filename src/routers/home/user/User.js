@@ -37,7 +37,7 @@ class User extends Component {
     username: '',
     password: ''
   }, changeFormData}) => {
-    const { signUp } = this.props;
+    const { signUp, signIn, changeTab } = this.props;
     switch (userStatus) {
       case constants.SIGNUP:
         return (
@@ -51,12 +51,17 @@ class User extends Component {
         );
       case constants.SIGNIN:
         return (
-          <SignInForm formData={formData} onSubmit={() => {}}
+          <SignInForm formData={formData} onSubmit={(e) => {e.preventDefault()}}
                     onChange={(key, value) => {changeFormData(key, value)}} 
                     switch={() => {}}
                     changeStauts={(status) => {changeUserStatus(status)}}
+                    signIn={signIn}
           />
         );
+      case constants.LOGINED:
+          return (
+            <div>登陆成功！</div>
+          )
       default:
           return null;
     }
@@ -66,11 +71,12 @@ class User extends Component {
     const { changeFormData, selector } = this.props;
     const formData = get(selector, 'formData');
     formData[key] = value;
-    console.log('f', formData)
     changeFormData(formData);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    const { getUserProperty } = this.props;
+    getUserProperty();
   }
 
 
@@ -90,14 +96,19 @@ class User extends Component {
   }
 }
 
-const mapStateToprops = state => {
-  return { selector: selector(state, userReducerName) };
+const mapStateToprops = (state, ownProps) => {
+  return { 
+    selector: selector(state, userReducerName),
+    changeTab: ownProps.changeTab,
+  };
 };
 
 const mapDispatchToProps = {
   changeUserStatus: actions.changeUserStatus,
   changeFormData: actions.changeFormData,
   signUp: actions.signUp,
+  signIn: actions.signIn,
+  getUserProperty: actions.getUserProperty
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(User);

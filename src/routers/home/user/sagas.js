@@ -1,6 +1,7 @@
 import { call, put, fork, takeEvery, select, all } from "redux-saga/effects";
 import * as api from "../api";
 import * as actions from "./actions";
+import * as constants from './constants'
 
 function* runRequestSuggest() {
   const { data, error } = yield call(api.getInTheaters);
@@ -17,10 +18,43 @@ function* runSignUp(action) {
   console.log('res', res)
 }
 
+function* runSignIn(action) {
+  console.log('signin')
+  const { payload = {} } = action;
+  const {data, error} = yield call(api.signIn, payload);
+  if (data && !error) {
+    if (data.status == constants.LOGINED) {
+      yield put(actions.changeUserStatus(constants.LOGINED));
+    } else {
+      yield put(actions.changeUserStatus(constants.SIGNUP));
+    }
+  }
+}
+
+function* runGetUserProperty(action) {
+  const { payload = {} } = action;
+  const { data, error } = yield call(api.getUserProperty, payload);
+  if (data && !error) {
+    if (data.status == constants.LOGINED) {
+      yield put(actions.changeUserStatus(constants.LOGINED));
+    } else {
+      yield put(actions.changeUserStatus(constants.SIGNUP));
+    }
+  }
+}
+
 function* handleSignUp() {
   yield takeEvery(actions.SIGNUP, runSignUp);
 }
 
+function* handleSignIn() {
+  yield takeEvery(actions.SIGNIN, runSignIn);
+}
+
+function* handleGetUserProperty() {
+  yield takeEvery(actions.GETUSERPROPERTY, runGetUserProperty);
+}
+
 export default function* rootSaga() {
-  yield fork(handleSignUp);
+  yield [call(handleSignUp), call(handleSignIn), call(handleGetUserProperty)];
 }

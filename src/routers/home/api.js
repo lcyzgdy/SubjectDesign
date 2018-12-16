@@ -22,3 +22,25 @@ export const signUp = (params) => {
       console.log(data);
     });
 };
+
+export const signIn = (params) => {
+  return api
+    .post("/signin", params)
+    .then(function(response) {
+      return response;
+    })
+    .catch(data => {
+      console.log(data);
+    });
+};
+
+export const getUserProperty = () => {
+  return api
+    .get("/getUserProperty?status=signUp")
+    .then(function(response) {
+      return response;
+    })
+    .catch(data => {
+      console.log(data);
+    });
+};

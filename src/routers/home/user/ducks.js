@@ -20,6 +20,10 @@ const userReducer = (state = {}, action) => {
       }
     case actions.SIGNUP:
       return state;
+    case actions.SIGNIN:
+      return state;
+    case actions.GETUSERPROPERTY:
+      return state;
     default:
       return {
         ...state,

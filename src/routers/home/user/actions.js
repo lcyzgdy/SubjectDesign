@@ -10,4 +10,11 @@ export const changeFormData = createAction(CHANGE_FORM_DATA);
 export const SIGNUP = `${NAME}.SIGNUP`;
 export const signUp = createAction(SIGNUP);
 
+export const SIGNIN = `${NAME}.SIGNIN`;
+export const signIn = createAction(SIGNIN);
+
+export const GETUSERPROPERTY = `${NAME}.GETUSERPROPERTY`;
+export const getUserProperty = createAction(GETUSERPROPERTY);
+
+
 

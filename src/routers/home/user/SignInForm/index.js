@@ -12,15 +12,16 @@ export default function (props) {
                 <div className="row">
                     <label><i className="iconfont icon-username"></i></label>
                     <input type="text" value={props.formData.username}
-                           onChange={props.onChange.bind(null, 'username')} spellCheck="false"/>
+                           onChange={(e) => {props.onChange('username', e.target.value)}} spellCheck="false"/>
                 </div>
                 <div className="row">
                     <label><i className="iconfont icon-password"></i></label>
                     <input type="password" value={props.formData.password}
-                           onChange={props.onChange.bind(null, 'password')}/>
+                            onChange={(e) => {props.onChange('password', e.target.value)}}
+                    />
                 </div>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                    <button className="signin-btn">登录</button>
+                    <button className="signin-btn" onClick={() => props.signIn(props.formData)}>登录</button>
                 </div>
             </form>
         </div>

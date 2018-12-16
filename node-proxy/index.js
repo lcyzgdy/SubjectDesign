@@ -31,6 +31,19 @@ app.post("/signup", function(req, res) {
   res.send(200);
 });
 
+app.post("/signin", function(req, res) {
+  res.send({
+    status: 0
+  });
+});
+
+app.get("/getUserProperty", function(req, res) {
+  console.log(req.query)
+  res.send({
+    status: req.query.status
+  });
+});
+
 // app.get("/movie/subject/:id", function(req, res) {
 //   var sreq = request.get(HOST + req.originalUrl);
 //   sreq.pipe(res);

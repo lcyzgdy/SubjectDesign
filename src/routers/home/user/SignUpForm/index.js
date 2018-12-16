@@ -23,7 +23,7 @@ export default function (props) {
                        onChange={(e) => {props.onChange('password', e.target.value)}}/>
             </div>
             <div>
-                <button className="signup-btn">注册</button>
+                <button className="signup-btn" onClick={() => props.signUp(props.formData)}>注册</button>
                 <a href="#" className="haveAccountBtn" onClick={() => {props.changeStauts(constants.SIGNIN)}}>已有账号，登陆</a>
             </div>
         </form>

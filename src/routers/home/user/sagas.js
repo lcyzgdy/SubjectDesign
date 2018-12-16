@@ -1,4 +1,4 @@
-import { call, put, fork, takeEvery } from "redux-saga/effects";
+import { call, put, fork, takeEvery, select, all } from "redux-saga/effects";
 import * as api from "../api";
 import * as actions from "./actions";
 
@@ -11,10 +11,16 @@ function* runRequestSuggest() {
   }
 }
 
-function* handleRequestSuggest() {
-  yield takeEvery(actions.GET_PLAY_NOW_FETCH, runRequestSuggest);
+function* runSignUp(action) {
+  const { payload = {} } = action;
+  const res = yield call(api.signUp, payload);
+  console.log('res', res)
+}
+
+function* handleSignUp() {
+  yield takeEvery(actions.SIGNUP, runSignUp);
 }
 
 export default function* rootSaga() {
-  yield fork(handleRequestSuggest);
+  yield fork(handleSignUp);
 }

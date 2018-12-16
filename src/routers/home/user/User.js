@@ -37,13 +37,16 @@ class User extends Component {
     username: '',
     password: ''
   }, changeFormData}) => {
+    const { signUp } = this.props;
     switch (userStatus) {
       case constants.SIGNUP:
         return (
-          <SignUpForm formData={formData} onSubmit={() => {}}
-                        onChange={(key, value) => {changeFormData(key, value)}} 
-                        switch={() => {}}
-                        changeStauts={(status) => {changeUserStatus(status)}}
+          <SignUpForm 
+            formData={formData} onSubmit={() => {}}
+            onChange={(key, value) => {changeFormData(key, value)}} 
+            switch={() => {}}
+            changeStauts={(status) => {changeUserStatus(status)}}
+            signUp={signUp}
           /> 
         );
       case constants.SIGNIN:
@@ -94,6 +97,7 @@ const mapStateToprops = state => {
 const mapDispatchToProps = {
   changeUserStatus: actions.changeUserStatus,
   changeFormData: actions.changeFormData,
+  signUp: actions.signUp,
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(User);

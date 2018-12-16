@@ -55,7 +55,7 @@ class Home extends Component {
           <HotPlay />
         </TabPanel>
         <TabPanel>
-          123
+          <HotPlay />
         </TabPanel>
         <TabPanel>
           <User />

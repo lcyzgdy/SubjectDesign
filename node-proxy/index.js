@@ -27,6 +27,10 @@ app.get("/movie/:type", function(req, res) {
   });
 });
 
+app.post("/signup", function(req, res) {
+  res.send(200);
+});
+
 // app.get("/movie/subject/:id", function(req, res) {
 //   var sreq = request.get(HOST + req.originalUrl);
 //   sreq.pipe(res);

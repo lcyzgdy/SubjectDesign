@@ -81,10 +81,10 @@ class HotPlay extends Component {
       return <Loading overly />;
     }
     const data = get(selector, "payload.data");
+    console.log('data', data)
     return (
       <div>
-        <HeaderSearch headerHeight={headerHeight} />
-        <div style={{ height: this.getScrollHeight(), overflow: "auto" }}>
+        <div style={{ height: "100vh", overflow: "auto" }}>
           
           {get(data, "subjects.length") > 0 &&
             get(data, "subjects").map(item => {

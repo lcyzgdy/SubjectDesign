@@ -18,6 +18,8 @@ const userReducer = (state = {}, action) => {
         ...state,
         formData: get(action, "payload"),
       }
+    case actions.SIGNUP:
+      return state;
     default:
       return {
         ...state,

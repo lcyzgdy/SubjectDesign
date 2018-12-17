@@ -24,7 +24,8 @@ function* runSignIn(action) {
   const {data, error} = yield call(api.signIn, payload);
   if (data && !error) {
     if (data.status == constants.LOGINED) {
-      yield put(actions.changeUserStatus(constants.LOGINED));
+      yield put(actions.changeUserStatus(data.status));
+      yield put(actions.changeUserId(data.uuid));
     } else {
       yield put(actions.changeUserStatus(constants.SIGNUP));
     }

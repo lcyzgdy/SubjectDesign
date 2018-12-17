@@ -5,6 +5,7 @@ import { homeList } from "./constants";
 import "./home.scss";
 import HotPlay from "./hotPlay/HotPlay";
 import User from './user/User';
+import Recommend from './recommend/Recommend';
 import 'antd-mobile/dist/antd-mobile.css';
 
 class Home extends Component {
@@ -55,7 +56,7 @@ class Home extends Component {
           <HotPlay />
         </TabPanel>
         <TabPanel>
-          <HotPlay />
+          <Recommend />
         </TabPanel>
         <TabPanel>
           <User changeTab={() => {this.setState({ index: 1 })}}/>

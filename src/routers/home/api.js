@@ -44,3 +44,14 @@ export const getUserProperty = () => {
       console.log(data);
     });
 };
+
+export const getRecommendList = (params) => {
+  return api
+    .get("/getRecommendList")
+    .then(function(response) {
+      return response;
+    })
+    .catch(data => {
+      console.log(data);
+    });
+};

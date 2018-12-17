@@ -13,6 +13,11 @@ const userReducer = (state = {}, action) => {
         ...state,
         userStatus: get(action, "payload"),
       }
+    case actions.CHANGE_USER_UUID:
+      return {
+        ...state,
+        uuid: get(action, "payload"),
+      }
     case actions.CHANGE_FORM_DATA:
       return {
         ...state,
@@ -27,7 +32,6 @@ const userReducer = (state = {}, action) => {
     default:
       return {
         ...state,
-        userStatus: 'signUp',
         formData: {},
       }
   }

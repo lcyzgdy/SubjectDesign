@@ -20,6 +20,7 @@ import './index.css';
 import './iconfont/iconfont.css';
 import BgBubbles from './BgBubbles';
 import * as constants from './constants';
+import Recommend from '../recommend/Recommend'
 
 
 class User extends Component {
@@ -63,7 +64,15 @@ class User extends Component {
             <div>登陆成功！</div>
           )
       default:
-          return null;
+      return (
+        <SignUpForm 
+          formData={formData} onSubmit={() => {}}
+          onChange={(key, value) => {changeFormData(key, value)}} 
+          switch={() => {}}
+          changeStauts={(status) => {changeUserStatus(status)}}
+          signUp={signUp}
+        /> 
+      );
     }
   }
 
@@ -82,8 +91,17 @@ class User extends Component {
 
   render() {
     const { selector, changeUserStatus } = this.props;
+    console.log('selecor', selector)
     const userStatus = get(selector, 'userStatus');
     const formData = get(selector, 'formData');
+    const uuid = get(selector, 'uuid');
+    if (uuid != -1 && userStatus == 0 ) {
+      return (
+        <div>
+          <Recommend uuid={uuid} />
+        </div>
+      );
+    }
     return (
       <div className="UserDialog-wrap">
         <div className="signUpOrLogIn">

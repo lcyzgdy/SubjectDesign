@@ -16,5 +16,8 @@ export const signIn = createAction(SIGNIN);
 export const GETUSERPROPERTY = `${NAME}.GETUSERPROPERTY`;
 export const getUserProperty = createAction(GETUSERPROPERTY);
 
+export const CHANGE_USER_UUID = `${NAME}.CHANGE_USER_UUID`;
+export const changeUserId = createAction(CHANGE_USER_UUID);
+
 
 

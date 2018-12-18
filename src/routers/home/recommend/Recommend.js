@@ -62,9 +62,28 @@ class Recommend extends Component {
   props: Props;
 
   componentDidMount() {
-    const { getRecommendList } = this.props;
-    console.log('props', this.props)
-    getRecommendList();
+    const { getRecommendList, userConfig, getUserRating, getUserRate } = this.props;
+    const uuid = get(userConfig, 'uuid')
+    if (uuid) {
+      if (getUserRating) {
+        getUserRate(uuid)
+      } else {
+        getRecommendList(uuid);
+      }
+    }  
+  }
+
+  componentDidUpdate(prevProps) {
+    const { getRecommendList, userConfig, getUserRating, getUserRate } = this.props;
+    const prevuuid = get(prevProps, 'userConfig.uuid');
+    const uuid = get(userConfig, 'uuid')
+    if (uuid && prevuuid != uuid) {
+      if (getUserRating) {
+        getUserRate(uuid)
+      } else {
+        getRecommendList(uuid);
+      }
+    }  
   }
 
   getScrollHeight = () => {
@@ -77,13 +96,15 @@ class Recommend extends Component {
   };
 
   render() {
-    const { selector, headerHeight } = this.props;
-    console.log('se',selector)
+    const { selector, headerHeight, userConfig } = this.props;
+    const { uuid } = userConfig;
+    if (!uuid) {
+      return <div>请登录！</div>
+    }
     if (get(selector, "isFetching")) {
       return <Loading overly />;
     }
     const data = get(selector, "payload.data");
-    console.log('data', data)
     return (
       <div>
         <div style={{ height: "100vh", overflow: "auto" }}>
@@ -121,6 +142,10 @@ class Recommend extends Component {
                         get(item, "overview").substr(0, 30)}
                       ...
                     </Text>
+                    <Text size="ssmall" color="grayColor">
+                      推荐值：{get(item, "rating") &&
+                        get(item, "rating")}
+                    </Text>
                   </Flex>
                   <Flex alignItems="center" className="margin-left-10" flex={1}>
                     <Button
@@ -146,13 +171,14 @@ class Recommend extends Component {
 const mapStateToprops = (state, ownProps) => {
   return { 
     selector: selector(state, getReducerName),
-    needUserRate: ownProps.needUserRate,
-    uuid: ownProps.uuid
+    getUserRating: ownProps.getUserRating,
+    userConfig: get(state, 'home.USER.USERCONFIG')
   };
 };
 
 const mapDispatchToProps = {
-  getRecommendList: actions.getRecommendList
+  getRecommendList: actions.getRecommendList,
+  getUserRate: actions.getUserRate,
 };
 
 export default connect(mapStateToprops, mapDispatchToProps)(Recommend);

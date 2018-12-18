@@ -84,21 +84,20 @@ class User extends Component {
   }
 
   componentWillMount() {
-    const { getUserProperty } = this.props;
-    getUserProperty();
+    const { getUserProperty, selector } = this.props;
+    const uuid = get(selector, 'uuid');
+    getUserProperty(uuid);
   }
-
 
   render() {
     const { selector, changeUserStatus } = this.props;
-    console.log('selecor', selector)
     const userStatus = get(selector, 'userStatus');
     const formData = get(selector, 'formData');
     const uuid = get(selector, 'uuid');
     if (uuid != -1 && userStatus == 0 ) {
       return (
         <div>
-          <Recommend uuid={uuid} />
+          <Recommend getUserRating={true} />
         </div>
       );
     }

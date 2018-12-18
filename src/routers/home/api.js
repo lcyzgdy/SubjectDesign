@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getInTheaters = () => {
   return api
-    .get("/movie/in_theaters?apikey=0df993c66c0c636e29ecbb5344252a4a")
+    .get("/")
     .then(function(response) {
       return response;
     })
@@ -25,7 +25,7 @@ export const signUp = (params) => {
 
 export const signIn = (params) => {
   return api
-    .post("/signin", params)
+    .post("/login", params)
     .then(function(response) {
       return response;
     })
@@ -36,7 +36,7 @@ export const signIn = (params) => {
 
 export const getUserProperty = () => {
   return api
-    .get("/getUserProperty?status=signUp")
+    .post("/getUserProperty")
     .then(function(response) {
       return response;
     })
@@ -45,9 +45,20 @@ export const getUserProperty = () => {
     });
 };
 
-export const getRecommendList = (params) => {
+export const getRecommendList = (uuid) => {
   return api
-    .get("/getRecommendList")
+    .post("/getRecommend",{uuid})
+    .then(function(response) {
+      return response;
+    })
+    .catch(data => {
+      console.log(data);
+    });
+};
+
+export const getUserRating = (uuid) => {
+  return api
+    .post("/getUserRatings",{uuid})
     .then(function(response) {
       return response;
     })

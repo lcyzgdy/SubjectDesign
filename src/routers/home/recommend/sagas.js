@@ -2,8 +2,8 @@ import { call, put, fork, takeEvery } from "redux-saga/effects";
 import * as api from "../api";
 import * as actions from "./actions";
 
-function* runRequestSuggest() {
-  const { data, error } = yield call(api.getRecommendList);
+function* runRequestSuggest(action) {
+  const { data, error } = yield call(api.getRecommendList, action.payload);
   if (data && !error) {
     yield put(actions.successSuggest({ data }));
   } else {
@@ -15,8 +15,8 @@ function* handleRequestSuggest() {
   yield takeEvery(actions.GET_RECOMMEND_LIST, runRequestSuggest);
 }
 
-function* runRequestUser() {
-  const { data, error } = yield call(api.getRecommendList);
+function* runRequestUser(action) {
+  const { data, error } = yield call(api.getUserRating, action.payload);
   if (data && !error) {
     yield put(actions.successSuggest({ data }));
   } else {

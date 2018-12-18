@@ -33,12 +33,14 @@ function* runSignIn(action) {
 }
 
 function* runGetUserProperty(action) {
-  const { payload = {} } = action;
+  const { payload = "" } = action;
   const { data, error } = yield call(api.getUserProperty, payload);
   if (data && !error) {
+    console.log('data',data)
     if (data.status == constants.LOGINED) {
       yield put(actions.changeUserStatus(constants.LOGINED));
     } else {
+      console.log('signup')
       yield put(actions.changeUserStatus(constants.SIGNUP));
     }
   }

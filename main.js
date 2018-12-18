@@ -125,10 +125,10 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/getUserRatings', (req, res) => {
-    if (!login.loggedin(req.session)) {
+    /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
-    }
+    }*/
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -169,6 +169,33 @@ app.post('/register', (req, res) => {
             return
         }
         movies.getMovieById(infoJson['movieid'], (err, status, result) => {
+            if (err) {
+                res.end('{"status": 6}')
+                return
+            }
+            let r = JSON.parse(util.format('{"status": %d}', status))
+            r['result'] = result
+            res.end(JSON.stringify(r))
+        })
+    })
+}).post('/getRecommend', (req, res) => {
+    /*if (!login.loggedin(req.session)) {
+        res.end('{"status": 5}')
+        return
+    }*/
+    let data = ''
+    req.on('data', (chunk) => {
+        data += chunk
+    }).on('end', () => {
+        let infoJson;
+        try {
+            infoJson = JSON.parse(data)
+        }
+        catch (err) {
+            res.end('{"status": 3}')    // JSON 格式错误
+            return
+        }
+        login.getRecommend(infoJson['uuid'], (err, status, result) => {
             if (err) {
                 res.end('{"status": 6}')
                 return

@@ -123,3 +123,16 @@ exports.searchOne = (collectionName, where, projection, callback) => {
         callback(err, result)
     })
 }
+
+/**
+ * @param {String} collectionName
+ * @param {any} where
+ * @param {any} projection
+ */
+exports.searchOneAwait = (collectionName, where, projection) => {
+    let options = {}
+    if (projection) {
+        options['projection'] = projection
+    }
+    return db.collection(collectionName).findOne(where, options)
+}

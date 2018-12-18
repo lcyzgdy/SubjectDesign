@@ -7,9 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "电影内容",
-            "program": "${workspaceFolder}/tools/movieoverview.js"
-        }
+            "name": "电影推荐",
+            "protocol": "inspector",
+            "runtimeArgs": [
+                "--max-old-space-size=8192"
+            ],
+            "program": "${workspaceFolder}/tools/rating.js"
+        },
         {
             "type": "node",
             "request": "launch",

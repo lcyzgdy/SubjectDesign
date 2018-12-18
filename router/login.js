@@ -92,7 +92,8 @@ exports.userProperty = (uuid, callback) => {
         userid: 0,
         password: 0,
         ratings: 0,
-        sid: 0
+        sid: 0,
+        recommend: 0
     }
     db.searchOne(DB_COLLECTION_NAME, where, projection, (err, res) => {
         if (err) {
@@ -120,16 +121,80 @@ exports.userRatings = (uuid, callback) => {
         password: 0,
         latestLogin: 0,
         registerDate: 0,
-        sid: 0
+        sid: 0,
+        recommend: 0
     }
-    db.searchOne(DB_COLLECTION_NAME, where, projection, (err, res) => {
+    db.searchOne(DB_COLLECTION_NAME, where, projection, async (err, res) => {
         if (err) {
             callback(err)
             return
         }
         let status = 0
-        if (!res) status = 2
-        callback(null, status, res)
+        let resf = []
+        for (let i = 0; i < res['ratings'].length; i++) {
+            let where = {
+                movieid: res['ratings'][i]['movieid']
+            }
+            let r = await db.searchOneAwait('movies', where)
+            let one = {
+                movieid: where.movieid,
+                title: r['title'],
+                overview: r['overview'],
+                genres: r['genres'],
+                imgurl: r['imgurl'],
+                rating: res['ratings'][i]['rating']
+            }
+            resf.push(one)
+        }
+        if (resf.length > 0) status = 0
+        callback(null, status, resf)
+    })
+}
+
+/**
+ * @param {String} uuid
+ * @param {(err: Error, status: number, result: any) => void} callback
+ */
+exports.getRecommend = async (uuid, callback) => {
+    let where = {
+        userid: uuid
+    }
+    let projection = {
+        _id: 0,
+        userid: 0,
+        username: 0,
+        password: 0,
+        latestLogin: 0,
+        registerDate: 0,
+        sid: 0,
+        ratings: 0
+    }
+    db.searchOne(DB_COLLECTION_NAME, where, projection, async (err, res) => {
+        if (err) {
+            callback(err)
+            return
+        }
+        else {
+            let status = 2
+            let resf = []
+            for (let i = 0; i < res['recommend'].length; i++) {
+                let where = {
+                    movieid: res['recommend'][i]['movieid']
+                }
+                let r = await db.searchOneAwait('movies', where)
+                let one = {
+                    movieid: where.movieid,
+                    title: r['title'],
+                    overview: r['overview'],
+                    genres: r['genres'],
+                    imgurl: r['imgurl'],
+                    rating: res['recommend'][i]['rating']
+                }
+                resf.push(one)
+            }
+            if (resf.length > 0) status = 0
+            callback(null, status, resf)
+        }
     })
 }
 

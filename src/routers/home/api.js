@@ -34,9 +34,9 @@ export const signIn = (params) => {
     });
 };
 
-export const getUserProperty = () => {
+export const getUserProperty = (uuid) => {
   return api
-    .post("/getUserProperty")
+    .post("/getUserProperty", {uuid})
     .then(function(response) {
       return response;
     })

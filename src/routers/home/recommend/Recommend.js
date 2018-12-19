@@ -126,7 +126,7 @@ class Recommend extends Component {
                       {get(item, "title")}
                     </Text>
                     <Flex>
-                      <StarComponents starNumber={get(item, "rating.stars")} />
+                      {/* <StarComponents starNumber={get(item, "rating")} />
                       <Text
                         color="grayColor"
                         className={
@@ -134,17 +134,21 @@ class Recommend extends Component {
                         }
                       >
                         {get(item, "rating.average") || "暂无评分"}
-                      </Text>
+                      </Text> */}
+                      <Text size="ssmall" color="grayColor">
+                      推荐值：{get(item, "rating") &&
+                        get(item, "rating")}
+                    </Text>
                     </Flex>
-
                     <Text size="ssmall" color="grayColor">
                       简介：{get(item, "overview") &&
                         get(item, "overview").substr(0, 30)}
                       ...
                     </Text>
                     <Text size="ssmall" color="grayColor">
-                      推荐值：{get(item, "rating") &&
-                        get(item, "rating")}
+                      类型：{get(item, "genres") &&
+                        get(item, "genres").join(',')
+                      }
                     </Text>
                   </Flex>
                   <Flex alignItems="center" className="margin-left-10" flex={1}>
@@ -156,7 +160,7 @@ class Recommend extends Component {
                         width: "100%"
                       }}
                     >
-                      购票
+                      详情
                     </Button>
                   </Flex>
                 </Flex>

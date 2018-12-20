@@ -85,7 +85,7 @@ exports.loggedin = (reqSess) => {
  */
 exports.userProperty = (uuid, callback) => {
     let where = {
-        userid: uuid
+        userid: parseInt(uuid)
     }
     let projection = {
         _id: 0,
@@ -112,7 +112,7 @@ exports.userProperty = (uuid, callback) => {
  */
 exports.userRatings = (uuid, callback) => {
     let where = {
-        userid: uuid
+        userid: parseInt(uuid) //uuid >> 0
     }
     let projection = {
         _id: 0,
@@ -131,6 +131,16 @@ exports.userRatings = (uuid, callback) => {
         }
         let status = 0
         let resf = []
+        if (!res || !res['ratings']) {
+            resf.push({
+                title: '您还没为任一电影打分',
+                overview: '请查看热映电影',
+                imgurl: 'http://172.24.12.188:444/1.png',
+                rating: 0.0
+            })
+            callback(null, status, resf)
+            return
+        }
         for (let i = 0; i < res['ratings'].length; i++) {
             let where = {
                 movieid: res['ratings'][i]['movieid']
@@ -146,7 +156,7 @@ exports.userRatings = (uuid, callback) => {
             }
             resf.push(one)
         }
-        if (resf.length > 0) status = 0
+        if (resf.length == 0) status = 2
         callback(null, status, resf)
     })
 }
@@ -157,7 +167,7 @@ exports.userRatings = (uuid, callback) => {
  */
 exports.getRecommend = async (uuid, callback) => {
     let where = {
-        userid: uuid
+        userid: uuid >> 0
     }
     let projection = {
         _id: 0,
@@ -174,27 +184,36 @@ exports.getRecommend = async (uuid, callback) => {
             callback(err)
             return
         }
-        else {
-            let status = 2
-            let resf = []
-            for (let i = 0; i < res['recommend'].length; i++) {
-                let where = {
-                    movieid: res['recommend'][i]['movieid']
-                }
-                let r = await db.searchOneAwait('movies', where)
-                let one = {
-                    movieid: where.movieid,
-                    title: r['title'],
-                    overview: r['overview'],
-                    genres: r['genres'],
-                    imgurl: r['imgurl'],
-                    rating: res['recommend'][i]['rating']
-                }
-                resf.push(one)
-            }
-            if (resf.length > 0) status = 0
-            callback(null, status, resf)
+        let status = 0
+        let resf = []
+        if (!res || !res['recommend']) {
+            resf.push({
+                title: '无推荐，请查看热映电影',
+                overview: '您还没给任一电影打分，请查看热映电影',
+                imgurl: 'http://172.24.12.188:444/2.png',
+                rating: 0.0
+            })
+            callback(null, 0, resf)
+            return
         }
+
+        for (let i = 0; i < res['recommend'].length; i++) {
+            let where = {
+                movieid: res['recommend'][i]['movieid']
+            }
+            let r = await db.searchOneAwait('movies', where)
+            let one = {
+                movieid: where.movieid,
+                title: r['title'],
+                overview: r['overview'],
+                genres: r['genres'],
+                imgurl: r['imgurl'],
+                rating: res['recommend'][i]['rating']
+            }
+            resf.push(one)
+        }
+        if (resf.length == 0) status = 2
+        callback(null, status, resf)
     })
 }
 

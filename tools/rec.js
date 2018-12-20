@@ -23,14 +23,14 @@ var i = 1
 var j = 0
 //var iii = 0
 async function insertRel() {
-    let buffer = fs.readFileSync('C:/Users/PC/Documents/Code/ml-latest/recommend_complete.txt')
+    let buffer = fs.readFileSync('C:/Users/PC/Documents/Code/ml-latest/recommend_new.txt')
     let all = buffer.toString()
     let allSplit = all.split('\n')
     console.log('Begin')
     for (let kk = 0; kk < allSplit.length; kk++) {
         let str = allSplit[kk]
         let userId = str.substr(0, str.indexOf(',')) >> 0
-        if (userId <= 270000) continue
+        //if (userId <= 270000) continue
         let recArr = []
         let recs = str.substr(str.indexOf(','))
         recs = recs.substr(recs.indexOf('[') + 1)
@@ -45,6 +45,7 @@ async function insertRel() {
             let ids = await db.collection('movies').findOne({ title: movieName })
             if (ids == null) {
                 console.log('err')
+                continue
             }
             let ppp = {
                 movieid: ids['movieid'],
@@ -58,7 +59,7 @@ async function insertRel() {
         let update = {
             $set: { recommend: recArr }
         }
-        //await db.collection('users').updateOne(where, update)
+        await db.collection('users').updateOne(where, update)
     }
     console.log('End')
     await dbClient.close()

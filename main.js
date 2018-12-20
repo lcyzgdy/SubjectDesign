@@ -6,16 +6,57 @@ var movies = require('./router/movies')
 var util = require('util')
 var session = require('./session')
 var app = express()
+var request = require('superagent')
+var path = require('path')
+
 
 session.init((sess) => {
     app.use(sess)
 })
 
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", 'Express')
+    //res.header("Content-Type", "application/json;charset=utf-8");
+    //res.header("Access-Control-Allow-Credentials", )
+    next();
+});
+
 app.get('/', (req, res) => {
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     res.end('test')
 })
 
 app.post('/register', (req, res) => {
+    console.log('Register')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
+    let data = ''
+    req.on('data', (chunk) => {
+        data += chunk
+    }).on('end', () => {
+        let infoJson;
+        try {
+            infoJson = JSON.parse(data)
+        }
+        catch (err) {
+            res.end('{"status": 3}')    // JSON 格式错误
+            return
+        }
+        register.register(req, infoJson['username'], infoJson['password'], req.ip, (err, status, session) => {
+            if (err) {
+                console.log('Register err' + err.message)
+                res.end(util.format('{"status": 2, "message": "%s"}', err.message))
+                return
+            }
+            console.log('Register: ' + status)
+            res.end(util.format('{"status": %d, "session": "%s"}', status, session))
+        })
+    })
+}).post('/signup', (req, res) => {
+    console.log('Register')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -39,6 +80,8 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/login', (req, res) => {
+    console.log('Login')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -57,11 +100,13 @@ app.post('/register', (req, res) => {
                 res.end(util.format('{"status": 4, "message": "%s"}', err.message))
                 return
             }
-            console.log('Login: ' + status)
+            //console.log('Login: ' + status)
             res.end(util.format('{"status": %d, "uuid": "%s"}', status, uuid))
         })
     })
 }).post('/logout', (req, res) => {
+    console.log('Logout')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     login.logout(req.session, (err) => {
         if (err) {
             console.log(err)
@@ -71,10 +116,12 @@ app.post('/register', (req, res) => {
         res.end('{"status": 0}')
     })
 }).post('/searchMovieByName', (req, res) => {
-    if (!login.loggedin(req.session)) {
+    console.log('Search Movie By Name')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
+    /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
-    }
+    }*/
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -98,10 +145,12 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/getUserProperty', (req, res) => {
-    if (!login.loggedin(req.session)) {
+    console.log('Get User Property')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
+    /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
-    }
+    }*/
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -125,6 +174,8 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/getUserRatings', (req, res) => {
+    console.log('Get User Ratings')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
@@ -152,10 +203,11 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/getMovieById', (req, res) => {
-    if (!login.loggedin(req.session)) {
+    //res.setHeader('Access-Control-Allow-Origin', '*')
+    /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
-    }
+    }*/
     let data = ''
     req.on('data', (chunk) => {
         data += chunk
@@ -179,6 +231,8 @@ app.post('/register', (req, res) => {
         })
     })
 }).post('/getRecommend', (req, res) => {
+    console.log('Get Recommend')
+    //res.setHeader('Access-Control-Allow-Origin', '*')
     /*if (!login.loggedin(req.session)) {
         res.end('{"status": 5}')
         return
@@ -208,13 +262,22 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/logintest', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     if (login.loggedin(req.session)) {
         res.end("Logged in")
     }
     else {
         res.end('Not logged in')
     }
+}).get("/movie/:type", function (req, res) {
+    var sreq = request.get('http://api.douban.com/v2' + req.originalUrl);
+    sreq.pipe(res)
+    sreq.on("end", function (err, res) {
+        console.log("Douban")
+    })
 })
+
+app.use(express.static('./web'))
 
 db.init(() => {
     app.listen(8086)

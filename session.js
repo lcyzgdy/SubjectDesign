@@ -10,7 +10,10 @@ var config = {
     secret: 'session',                  // String 类型的字符串，作为服务器端生成 session 的签名    
     resave: false,                      // 强制保存 session 即使它并没有变化。
     saveUninitialized: false,           // 强制将未初始化的 session 存储。
-    cookie: { maxAge: 1000 * 30 * 60 }, // secure:true  https这样的情况才可以访问cookie
+    cookie: {
+        maxAge: 1000 * 30 * 60,
+        secure: false
+    }, // secure: true, https这样的情况才可以访问cookie
     rolling: true,                      // 在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false）    
     store: storeage
 }

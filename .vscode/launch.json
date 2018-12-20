@@ -12,7 +12,7 @@
             "runtimeArgs": [
                 "--max-old-space-size=8192"
             ],
-            "program": "${workspaceFolder}/tools/rating.js"
+            "program": "${workspaceFolder}/tools/rec.js"
         },
         {
             "type": "node",

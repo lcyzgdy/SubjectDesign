@@ -18,7 +18,8 @@ exports.register = (request, _username, _password, remoteIp, callback) => {
         username: _username,
         password: _password,
         latestLogin: registerDate,
-        registerDate: registerDate
+        registerDate: registerDate,
+        userid: registerDate
     }
     db.findAny(DB_COLLECTION_NAME, { username: _username }, (err, result) => {
         if (err) {
